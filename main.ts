@@ -1,10 +1,12 @@
 #!/usr/bin/env -S deno run --allow-read --allow-env
 
-import {yaml} from './deps.ts'
+import {yaml} from './mod.ts'
 // import objects from './example/nginx/mod.ts'
 
-const dir = Deno.args[0]
-const module = await import(`./${dir}/mod.ts`)
+const path = Deno.realPathSync(Deno.args[0])
+const isDir = Deno.statSync(path).isDirectory
+const modPath = isDir ? `${path}/mod.ts` : path
+const module = await import(modPath)
 const objects = module.default
 for (const object of objects) {
     const s = yaml.stringify(object as Record<string, unknown>)

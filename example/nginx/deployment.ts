@@ -1,4 +1,4 @@
-import { Deployment, env } from "../../deps.ts";
+import { Deployment, env } from './deps.ts'
 
 const replicas = {
   staging: 1,
