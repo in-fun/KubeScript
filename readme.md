@@ -21,13 +21,13 @@
 2. Install `kube-script` by running the following command.
 
    ```bash
-   deno install --unstable -A --root /usr/local -n ks https://cdn.jsdelivr.net/gh/in-fun/kube-script@main/main.ts
+   deno install --unstable -A --root /usr/local -n ks https://deno.land/x/kube_script@v0.1.0/main.ts
    ```
 ### Quick demo
 
 You can try `kube-script` without writing any code.
 ```bash
-ks https://cdn.jsdelivr.net/gh/in-fun/kube-script/example/nginx/mod.ts
+ks https://deno.land/x/kube_script/example/nginx/mod.ts
 ```
 
 ### Deploy Nginx
