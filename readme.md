@@ -6,11 +6,51 @@
 
 **Proof of Concept**
 
+### Features
+
+* [No yaml files](https://noyaml.com/).
+* Type safe with Typescript.
+* Safe sandbox with Deno.
+
 ## Quickstart
 
+### Prerequisites
 
-1. Generate k8s yaml files via `./gen.ts example/nginx`.
-2. Show diff from current settings via `env=production ./gen.ts example/nginx | kubectl diff -f -`.
-3. Apply k8s resources via `env=production ./gen.ts example/nginx | kubectl apply -f -`.
+
+1. Install deno by following [the official guide](https://deno.land/manual@v1.28.1/getting_started/installation).
+2. Install `kube-script` by running the following command.
+
+   ```bash
+   deno install --unstable -A --root /usr/local -n ks https://cdn.jsdelivr.net/gh/in-fun/kube-script@main/main.ts
+   ```
+### Quick demo
+
+You can try `kube-script` without writing any code.
+```bash
+ks https://cdn.jsdelivr.net/gh/in-fun/kube-script/example/nginx/mod.ts
+```
+
+### Deploy Nginx
+
+1. Checkout this project.
+   ```bash
+   git clone https://github.com/in-fun/kube-script.git
+   ```
+
+1. Generate k8s yaml files.
+
+   ```bash
+   ks example/nginx
+   ```
+2. Show diff from current settings.
+
+   ```bash
+   env=production ks example/nginx | kubectl diff -f -
+   ```
+3. Apply k8s resources.
+
+   ```bash
+   env=production ks example/nginx | kubectl apply -f -
+   ```
 
 
