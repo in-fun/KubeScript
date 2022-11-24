@@ -1,5 +1,7 @@
-import deployment from './deployment.ts';
+import deployment from "./deployment.ts";
+import service from "./service.ts";
 
 export default [
-    deployment
-]
+  deployment,
+  service,
+];

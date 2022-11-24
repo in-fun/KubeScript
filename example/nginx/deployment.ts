@@ -1,28 +1,30 @@
-import { Deployment, env } from './deps.ts'
+import { Deployment, env } from "./deps.ts";
+import labels from "./labels.ts";
 
 const replicas = {
   staging: 1,
   production: 2,
 };
 
-const nginxLabels = { app: "nginx" };
-const name = "nginx";
-const nginx: Deployment = {
+const name = labels.app;
+const image = "nginx:1.7.9";
+
+const res: Deployment = {
   apiVersion: "apps/v1",
   kind: "Deployment",
   metadata: {
-    name: name,
-    labels: nginxLabels,
+    name,
+    labels,
   },
   spec: {
-    selector: { matchLabels: nginxLabels },
+    selector: { matchLabels: labels },
     replicas: replicas[env],
     template: {
-      metadata: { labels: nginxLabels },
+      metadata: { labels },
       spec: {
         containers: [{
           name: "nginx",
-          image: "nginx:1.7.9",
+          image: image,
           ports: [{ containerPort: 80 }],
         }],
       },
@@ -30,4 +32,4 @@ const nginx: Deployment = {
   },
 };
 
-export default nginx;
+export default res;
