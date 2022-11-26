@@ -1,4 +1,4 @@
-import { Deployment, env } from "./deps.ts";
+import { Deployment, env, withDebugger } from "./deps.ts";
 import labels from "./labels.ts";
 
 const replicas = {
@@ -32,4 +32,4 @@ const res: Deployment = {
   },
 };
 
-export default res;
+export default withDebugger(res);
