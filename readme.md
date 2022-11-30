@@ -1,10 +1,12 @@
+<div align="center">
 <p align="center">
 <img width="256" alt="cover" src="doc/image/cover_photo.png"/>
 
 **`Kubescript` is a *infrastructure as code* solution to Kubernete devops**
 
-<img alt="demo" src="doc/image/service.ts.png"/>
+<img width="400" alt="demo" src="doc/image/service.ts.png"/>
 </p>
+</div>
 
 <hr/>
 
