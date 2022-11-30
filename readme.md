@@ -1,10 +1,16 @@
-## Introduction
+<p align="center">
+<img width="256" alt="cover" src="doc/image/cover_photo.png"/>
 
-`kube-script` is a *infrastructure as code* solution to k8s ops.
+**`Kubescript` is a *infrastructure as code* solution to Kubernete devops**
+
+<img alt="demo" src="doc/image/service.ts.png"/>
+</p>
+
+<hr/>
 
 ### Status
 
-**Proof of Concept**
+**Beta**
 
 ### Features
 
