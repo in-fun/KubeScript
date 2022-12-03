@@ -1,5 +1,10 @@
 import {hash, url} from '../mod.ts';
 
+/**
+ * A config map generator.
+ * To learn more about how config map generator works, please refer to this [link](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/#configmapgenerator).
+ */
+
 type DataType = {
     [key: string]: string
 }

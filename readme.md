@@ -1,10 +1,18 @@
-## Introduction
+<div align="center">
+<p align="center">
+<img width="256" alt="cover" src="doc/image/cover_photo.png"/>
 
-`kube-script` is a *infrastructure as code* solution to k8s ops.
+**`KubeScript` is a *infrastructure as code* solution to Kubernete devops**
+
+<img width="400" alt="demo" src="doc/image/service.ts.png"/>
+</p>
+</div>
+
+<hr/>
 
 ### Status
 
-**Proof of Concept**
+**Beta**
 
 ### Features
 
@@ -18,14 +26,14 @@
 
 
 1. Install deno by following [the official guide](https://deno.land/manual@v1.28.1/getting_started/installation).
-2. Install `kube-script` by running the following command.
+2. Install `KubeScript` by running the following command.
 
    ```bash
-   deno install --unstable -A --root /usr/local -n ks https://deno.land/x/kube_script@v0.1.0/main.ts
+   deno install --unstable -A --root /usr/local -n ks https://deno.land/x/kube_script@v0.2.0/main.ts
    ```
 ### Quick demo
 
-You can try `kube-script` without writing any code.
+You can try `KubeScript` without writing any code.
 ```bash
 ks https://deno.land/x/kube_script/example/nginx/mod.ts
 ```
@@ -34,7 +42,7 @@ ks https://deno.land/x/kube_script/example/nginx/mod.ts
 
 1. Checkout this project.
    ```bash
-   git clone https://github.com/in-fun/kube-script.git
+   git clone https://github.com/in-fun/KubeScript.git
    ```
 
 1. Generate k8s yaml files.
