@@ -29,7 +29,7 @@
 2. Install `KubeScript` by running the following command.
 
    ```bash
-   deno install --unstable -A --root /usr/local -n ks https://deno.land/x/kube_script@v0.1.0/main.ts
+   deno install --unstable -A --root /usr/local -n ks https://deno.land/x/kube_script@v0.2.0/main.ts
    ```
 ### Quick demo
 
