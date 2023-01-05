@@ -1,9 +1,7 @@
 #!/usr/bin/env -S deno run --unstable --allow-net --allow-read --allow-env
 
 import { yaml } from "./deps.ts";
-import './mod.ts'
-
-const args = globalThis.tla;
+import { args } from "./mod.ts";
 
 let url = args._[0] as string;
 if (url.search(":") < 0) {

@@ -11,20 +11,6 @@ export type EnvType = "staging" | "production";
 
 export const hash = object_hash.default;
 
-declare global {
-  /**
-   * top level arguments
-   */
-  // deno-lint-ignore no-var
-  var tla: {
-    // deno-lint-ignore no-explicit-any
-    [x: string]: any;
-    _: (string | number)[];
-  };
-}
-
-const args = flags.parse(Deno.args);
-
-globalThis.tla = args;
+export const args = flags.parse(Deno.args);
 
 export const env = args["env"] as EnvType || "staging";
