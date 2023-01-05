@@ -2,7 +2,7 @@
 <p align="center">
 <img width="256" alt="cover" src="doc/image/cover_photo.png"/>
 
-**`KubeScript` is a *infrastructure as code* solution to Kubernete devops**
+**`KubeScript` is a DRY *infrastructure as code* solution to Kubernetes DevOps**
 
 <img width="400" alt="demo" src="doc/image/service.ts.png"/>
 </p>
@@ -17,7 +17,8 @@
 ### Features
 
 * [No yaml files](https://noyaml.com/).
-* Type safe with Typescript.
+* No boilerplate or hack.
+* Type based code completion with Typescript.
 * Safe sandbox with Deno.
 
 ## Quickstart
@@ -35,7 +36,7 @@
 
 You can try `KubeScript` without writing any code.
 ```bash
-ks https://deno.land/x/kube_script/example/nginx/mod.ts
+ks https://deno.land/x/kube_script/example/web/mod.ts
 ```
 
 ### Deploy Nginx
