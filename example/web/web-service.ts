@@ -8,7 +8,7 @@ const replicas = {
 const container = "nginx";
 
 const res: WebService = new WebService(container, "nginx:1.7.9", replicas[env])
-  .withContainerPorts(container, [{ containerPort: 80 }])
-  .withServicePorts([{ port: 80 }]);
+  .setContainerPorts(container, [{ containerPort: 80 }])
+  .setServicePorts([{ port: 80 }]);
 
 export default res;

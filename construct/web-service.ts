@@ -10,17 +10,17 @@ export class WebService {
   deployment: Deployment;
   service: Service;
 
-  constructor(webService: string, image: string, replica: number) {
-    const labels = { app: webService };
+  constructor(name: string, image: string, replica: number) {
+    const labels = { app: name };
     this.deployment = {
       apiVersion: "apps/v1",
       kind: "Deployment",
       metadata: {
-        name: webService,
+        name: name,
         labels: labels,
       },
       spec: {
-        selector: { matchLabels: { app: webService } },
+        selector: { matchLabels: labels },
         replicas: replica,
         template: {
           metadata: {
@@ -28,7 +28,7 @@ export class WebService {
           },
           spec: {
             containers: [{
-              name: webService,
+              name: name,
               image: image,
             }],
           },
@@ -40,16 +40,16 @@ export class WebService {
       apiVersion: "v1",
       kind: "Service",
       metadata: {
-        name: webService,
+        name: name,
       },
       spec: {
         clusterIP: "None",
-        selector: { app: webService },
+        selector: labels,
       },
     };
   }
 
-  withContainerPorts(
+  setContainerPorts(
     container: string,
     ports: Array<ContainerPort>,
   ): WebService {
@@ -63,7 +63,7 @@ export class WebService {
     return this;
   }
 
-  withServicePorts(ports: Array<ServicePort>): WebService {
+  setServicePorts(ports: Array<ServicePort>): WebService {
     this.service.spec!.ports = ports;
     return this;
   }
