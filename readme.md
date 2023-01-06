@@ -54,12 +54,12 @@ ks https://deno.land/x/kube_script/example/web/mod.ts
 2. Show diff from current settings.
 
    ```bash
-   env=production ks example/nginx | kubectl diff -f -
+   ks example/nginx --env production | kubectl diff -f -
    ```
 3. Apply k8s resources.
 
    ```bash
-   env=production ks example/nginx | kubectl apply -f -
+   ks example/nginx --env production | kubectl apply -f -
    ```
 
 
