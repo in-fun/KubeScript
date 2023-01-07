@@ -1,0 +1,86 @@
+admin:
+  access_log_path: "/var/log/envoy/admin_access.log"
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 9901
+
+dynamic_resources:
+  ads_config:
+    # set_node_on_first_message_only: false
+    transport_api_version: V3
+    api_type: GRPC
+    grpc_services:
+      envoy_grpc:
+        cluster_name: ads_cluster
+  lds_config:
+    ads: {}
+    resource_api_version: V3
+  cds_config:
+    ads: {}
+    resource_api_version: V3
+
+static_resources:
+  clusters:
+
+  # ads
+  - name: ads_cluster
+    connect_timeout: 0.25s
+    type: LOGICAL_DNS
+    lb_policy: ROUND_ROBIN
+    http2_protocol_options: {}
+    load_assignment:
+      cluster_name: ads_cluster
+      endpoints:
+        - lb_endpoints:
+            - endpoint:
+                address:
+                  socket_address:
+                    address: control-plane.service.tubi
+                    port_value: 9902
+
+
+  # the zipkin tracing cluster
+  - name: zipkin
+    connect_timeout: 0.25s
+    type: STRICT_DNS
+    lb_policy: ROUND_ROBIN
+    load_assignment:
+      cluster_name: opentelemetry_agent
+      endpoints:
+        - lb_endpoints:
+            - endpoint:
+                address:
+                  socket_address:
+                    address: NODE_IP
+                    port_value: 9411
+
+stats_sinks:
+  name: envoy.dog_statsd
+  typed_config:
+    "@type": type.googleapis.com/envoy.config.metrics.v3.DogStatsdSink
+    address:
+      socket_address:
+        protocol: UDP
+        address: NODE_IP
+        port_value: 8125
+
+tracing:
+  http:
+    name: envoy.zipkin
+    typed_config:
+      "@type": type.googleapis.com/envoy.config.trace.v3.ZipkinConfig
+      collector_cluster: zipkin
+      collector_endpoint: /api/v2/spans
+      collector_endpoint_version: HTTP_JSON
+      # generate envoy's own span id, rather than sharing span id inherited from parent (nginx or other envoy)
+      shared_span_context: false
+
+layered_runtime:
+  layers:
+  - name: disk
+    disk_layer:
+      symlink_root: /srv/runtime/current
+      subdirectory: envoy
+  - name: admin
+    admin_layer: {}

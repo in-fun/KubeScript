@@ -1,4 +1,4 @@
-import { env, WebService } from "./deps.ts";
+import { env, WebServiceBuilder, WebService } from "./deps.ts";
 
 const replicas = {
   staging: 1,
@@ -7,8 +7,8 @@ const replicas = {
 
 const container = "nginx";
 
-const res: WebService = new WebService(container, "nginx:1.7.9", replicas[env])
-  .setContainerPorts(container, [{ containerPort: 80 }])
-  .setServicePorts([{ port: 80 }]);
+const res: WebService = WebServiceBuilder.create(container, "nginx:1.7.9", replicas[env])
+  .withPorts(container, [{ containerPort: 80 }])
+  .withServicePorts([{ port: 80 }]);
 
 export default res;
