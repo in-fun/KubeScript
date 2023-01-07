@@ -8,5 +8,4 @@ export * as object_hash from "https://deno.land/x/object_hash@2.0.3.1/mod.ts";
 
 export * as url from "https://deno.land/std@0.166.0/node/url.ts";
 
-export { Hash, encode } from "https://deno.land/x/checksum@1.2.0/mod.ts";
-
+export * as flags from "https://deno.land/std@0.168.0/flags/mod.ts";

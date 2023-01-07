@@ -1,6 +1,7 @@
-import webService from "./web-service.ts";
+import deployment from "./deployment.ts";
+import service from "./service.ts"
 
 export default [
-  webService.deployment,
-  webService.service
+  deployment,
+  service
 ];

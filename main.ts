@@ -1,8 +1,9 @@
 #!/usr/bin/env -S deno run --unstable --allow-net --allow-read --allow-env
 
-import { yaml } from "./mod.ts";
+import { yaml } from "./deps.ts";
+import { args } from "./mod.ts";
 
-let url = Deno.args[0];
+let url = args._[0] as string;
 if (url.search(":") < 0) {
   // a local path
   const path = Deno.realPathSync(url);
