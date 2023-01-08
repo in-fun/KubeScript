@@ -52,8 +52,8 @@ spec:
         - gitops
         - /tmp/git/repo
         - --path
-        - guestbook
-        image: argoproj/gitops-agent:latest
+        - example/nginx
+        image: ghcr.io/in-fun/ks-agent:0.1.1
         name: gitops-agent
         volumeMounts:
         - mountPath: /tmp/git
@@ -65,8 +65,12 @@ spec:
         - repo
         env:
         - name: GIT_SYNC_REPO
-          value: https://github.com/argoproj/argocd-example-apps
-        image: k8s.gcr.io/git-sync:v3.1.6
+          value: https://github.com/in-fun/KubeScript
+        - name: GIT_SYNC_BRANCH
+          value: main
+        - name: GIT_SYNC_SPARSE_CHECKOUT_FILE
+          value: example
+        image: k8s.gcr.io/git-sync:v3.1.6 # registry.k8s.io/git-sync/git-sync:v3.6.2
         name: git-sync
         volumeMounts:
         - mountPath: /tmp/git

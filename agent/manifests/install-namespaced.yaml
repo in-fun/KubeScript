@@ -49,7 +49,7 @@ spec:
         - --path
         - guestbook
         - --namespaced
-        image: argoproj/gitops-agent:latest
+        image: ghcr.io/in-fun/ks-agent:latest
         name: gitops-agent
         volumeMounts:
         - mountPath: /tmp/git
