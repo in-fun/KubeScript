@@ -49,10 +49,13 @@ spec:
     spec:
       containers:
       - command:
-        - gitops
-        - /tmp/git/repo
-        - --path
-        - example/nginx
+        - sh
+        - -c
+        # Add the `git config` command to fix a git issue, refer to the following link for details.
+        # https://confluence.atlassian.com/bbkb/git-command-returns-fatal-error-about-the-repository-being-owned-by-someone-else-1167744132.html
+        - |
+          git config --global --add safe.directory '*'
+          gitops /tmp/git/repo --path example/nginx
         image: ghcr.io/in-fun/ks-agent:0.1.1
         name: gitops-agent
         volumeMounts:
