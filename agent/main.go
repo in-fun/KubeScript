@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/base64"
@@ -59,19 +60,24 @@ func (s *settings) getGCMark(key kube.ResourceKey) string {
 	return "sha256." + base64.RawURLEncoding.EncodeToString(h.Sum(nil))
 }
 
-func (s *settings) parseManifests() ([]*unstructured.Unstructured, string, error) {
+func (s *settings) parseManifests(log logr.Logger) ([]*unstructured.Unstructured, string, error) {
 	cmd := exec.Command("git", "rev-parse", "HEAD")
 	cmd.Dir = s.repoPath
 	revision, err := cmd.CombinedOutput()
 	if err != nil {
+		log.Error(err, "failed to run `git rev-parse HEAD`", "output", string(revision))
 		return nil, "", err
 	}
 	var res []*unstructured.Unstructured
 	for i := range s.paths {
 		path := filepath.Join(s.repoPath, s.paths[i])
 		ksCmd := exec.Command("ks", path)
+		var stderr bytes.Buffer
+		ksCmd.Stderr = &stderr
 		output, err := ksCmd.Output()
 		if err != nil {
+			msg := fmt.Sprintf("failed to run `ks %s`", path)
+			log.Error(err, msg, "stderr", stderr.String())
 			return nil, "", err
 		}
 		items, err := kube.SplitYAML(output)
@@ -173,7 +179,7 @@ func newCmd(log logr.Logger) *cobra.Command {
 			}()
 
 			for ; true; <-resync {
-				target, revision, err := s.parseManifests()
+				target, revision, err := s.parseManifests(log)
 				if err != nil {
 					log.Error(err, "Failed to parse target state")
 					continue

@@ -1,5 +1,5 @@
 EXE := podman
-TAG := ghcr.io/in-fun/ks-agent:0.1.0
+TAG := ghcr.io/in-fun/ks-agent:0.1.1
 
 .PHONY: dep default image test push
 

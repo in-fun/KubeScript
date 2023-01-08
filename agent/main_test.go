@@ -4,7 +4,10 @@ import (
 	"testing"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/klog/v2/klogr"
 )
+
+var log = klogr.New()
 
 func Test_settings_parseManifests(t *testing.T) {
 	type fields struct {
@@ -40,7 +43,7 @@ func Test_settings_parseManifests(t *testing.T) {
 				repoPath: tt.fields.repoPath,
 				paths:    tt.fields.paths,
 			}
-			manifest, revision, err := s.parseManifests()
+			manifest, revision, err := s.parseManifests(log)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("settings.parseManifests() error = %v, wantErr %v", err, tt.wantErr)
 				return
