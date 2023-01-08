@@ -5,16 +5,15 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"fmt"
-	"github.com/argoproj/gitops-engine/pkg/utils/text"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"os/exec"
-	"path/filepath"
 	"runtime"
 	"strings"
 	"text/tabwriter"
 	"time"
+
+	"github.com/argoproj/gitops-engine/pkg/utils/text"
 
 	"github.com/go-logr/logr"
 	"github.com/spf13/cobra"
@@ -68,29 +67,18 @@ func (s *settings) parseManifests() ([]*unstructured.Unstructured, string, error
 	}
 	var res []*unstructured.Unstructured
 	for i := range s.paths {
-		if err := filepath.Walk(filepath.Join(s.repoPath, s.paths[i]), func(path string, info os.FileInfo, err error) error {
-			if err != nil {
-				return err
-			}
-			if info.IsDir() {
-				return nil
-			}
-			if ext := strings.ToLower(filepath.Ext(info.Name())); ext != ".json" && ext != ".yml" && ext != ".yaml" {
-				return nil
-			}
-			data, err := ioutil.ReadFile(path)
-			if err != nil {
-				return err
-			}
-			items, err := kube.SplitYAML(data)
-			if err != nil {
-				return fmt.Errorf("failed to parse %s: %v", path, err)
-			}
-			res = append(res, items...)
-			return nil
-		}); err != nil {
+		path := s.paths[i]
+		ksCmd := exec.Command("ks", path)
+		output, err := ksCmd.Output()
+		if err != nil {
 			return nil, "", err
 		}
+		items, err := kube.SplitYAML(output)
+		if err != nil {
+			err := fmt.Errorf("failed to parse output of `ks %s`: %v", path, err)
+			return nil, "", err
+		}
+		res = append(res, items...)
 	}
 	for i := range res {
 		annotations := res[i].GetAnnotations()
