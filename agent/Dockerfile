@@ -21,11 +21,12 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /dist/git
 # Runtime env
 # FROM alpine/git:v2.24.3
 FROM denoland/deno:alpine-1.29.2
-COPY --from=builder /dist/gitops /usr/local/bin/gitops
-
 # Install deno
 # COPY --from=bin /deno /bin/deno
 
+# Install utility packages
 RUN apk add --no-cache curl git
 # Install KubeScript
 RUN deno install --unstable -A --root /usr/local -n ks https://deno.land/x/kube_script/main.ts
+# Copy executable files
+COPY --from=builder /dist/gitops /usr/local/bin/gitops 
