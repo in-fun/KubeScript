@@ -22,14 +22,14 @@ func Test_settings_parseManifests(t *testing.T) {
 			name: "Simple case",
 			fields: fields{
 				repoPath: "..",
-				paths:    []string{"../example/nginx"},
+				paths:    []string{"example/nginx"},
 			},
 		},
 		{
 			name: "Error when path is not ks dir",
 			fields: fields{
 				repoPath: "..",
-				paths:    []string{"../example"},
+				paths:    []string{"example"},
 			},
 			wantErr: true,
 		},

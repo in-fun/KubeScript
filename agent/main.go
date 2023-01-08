@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"text/tabwriter"
@@ -67,7 +68,7 @@ func (s *settings) parseManifests() ([]*unstructured.Unstructured, string, error
 	}
 	var res []*unstructured.Unstructured
 	for i := range s.paths {
-		path := s.paths[i]
+		path := filepath.Join(s.repoPath, s.paths[i])
 		ksCmd := exec.Command("ks", path)
 		output, err := ksCmd.Output()
 		if err != nil {
