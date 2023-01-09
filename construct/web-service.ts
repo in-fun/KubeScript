@@ -38,7 +38,6 @@ export class WebServiceBuilder {
   deployment!: Deployment;
   service!: Service;
   customResources?: unknown[];
-  monitorName?: string;
 
   build(): WebService {
     return new WebService(this.deployment, this.service, this.customResources)
@@ -120,15 +119,6 @@ export class WebServiceBuilder {
   withServicePorts(ports: Array<ServicePort>): WebServiceBuilder {
     this.service.spec!.ports = ports;
     return this
-  }
-
-  withMonitorName(monitorName: string): WebServiceBuilder {
-    this.monitorName = monitorName;
-    return this;
-  }
-
-  withEnvoy(): WebServiceBuilder {
-    return this.withDeployment(envoy(this.deployment))
   }
 
   withDeployment(deployment: Deployment): WebServiceBuilder {
