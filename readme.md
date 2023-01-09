@@ -21,6 +21,8 @@
 * Type based code completion with Typescript.
 * Safe sandbox with Deno.
 
+![screencast](doc/screencast.mov)
+
 ## Quickstart
 
 ### Prerequisites
