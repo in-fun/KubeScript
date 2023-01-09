@@ -1,11 +1,16 @@
-import datadog from "../trait/datadog.ts";
+// deno-lint-ignore-file no-explicit-any
+import { datadogFull, datadogSlim } from "../trait/datadog.ts";
 import commonEnv from "../trait/common-env.ts";
+import commonLifeCycle from "../trait/common-lifecycle.ts"
 import {
   ContainerPort,
   Deployment,
   Service,
   ServicePort,
   EnvVar,
+  Probe,
+  VolumeMount,
+  ResourceRequirements,
   envoy,
   env,
   findContainer,
@@ -13,7 +18,7 @@ import {
 } from "./deps.ts";
 
 import { yaml } from "../deps.ts";
-import { relativePath } from "../trait/gen-config-map.ts";
+
 
 export class WebService {
   deployment!: Deployment;
@@ -25,6 +30,12 @@ export class WebService {
     this.service = service
     this.customResources = customResources
   }
+
+  manifest(): any[] {
+    const res: any[] = [this.service, this.deployment];
+    (this.customResources ?? []).forEach(r => res.push(r))
+    return res
+  }
 }
 
 export class WebServiceBuilder {
@@ -33,11 +44,11 @@ export class WebServiceBuilder {
   customResources?: unknown[];
   monitorName?: string;
 
-  public build(): WebService {
+  build(): WebService {
     return new WebService(this.deployment, this.service, this.customResources)
   }
 
-  public static create(name: string, image: string, replica: number): WebServiceBuilder {
+  static create(name: string, image: string, replica: number): WebServiceBuilder {
     const labels = { app: name }
     const deployment: Deployment = {
       apiVersion: "apps/v1",
@@ -60,6 +71,7 @@ export class WebServiceBuilder {
             containers: [{
               name: name,
               image: image,
+              imagePullPolicy: "IfNotPresent",
             }],
           },
         },
@@ -123,11 +135,19 @@ export class WebServiceBuilder {
     return this.withDeployment(envoy(this.deployment))
   }
 
-  withDatadog(): WebServiceBuilder {
+  withDatadogFullAnnotation(): WebServiceBuilder {
     if (!this.monitorName) {
       throw new Error(`monitor name ${this.monitorName} is not defined`);
     }
-    const mergedDeployment = datadog(this.deployment, this.monitorName);
+    const mergedDeployment = datadogFull(this.deployment, this.monitorName);
+    return this.withDeployment(mergedDeployment)
+  }
+
+  withDatadogSlimAnnotation(): WebServiceBuilder {
+    if (!this.monitorName) {
+      throw new Error(`monitor name ${this.monitorName} is not defined`);
+    }
+    const mergedDeployment = datadogSlim(this.deployment, this.monitorName);
     return this.withDeployment(mergedDeployment)
   }
 
@@ -141,8 +161,10 @@ export class WebServiceBuilder {
     return this
   }
 
-  withConsul(): WebServiceBuilder {
-    this.service.metadata!.annotations!["consul.hashicorp.com/service-name"] = this.monitorName!;
+  withServiceAnnotations(appendAnnotations:{[key: string]: string}): WebServiceBuilder {
+    const annotations = this.service.metadata!.annotations ?? {};
+    Object.entries(appendAnnotations).forEach((kv, _1, _2) => annotations[kv[0]] = kv[1])
+    this.service.metadata!.annotations = annotations;
     return this
   }
 
@@ -156,13 +178,39 @@ export class WebServiceBuilder {
     return this
   }
 
+  withReadinessProbe(container: string, probe: Probe): WebServiceBuilder {
+    const target = findContainer(this.deployment, container);
+    target.readinessProbe = probe;
+    return this;
+  }
+
+  withLivenessProbe(container: string, probe: Probe): WebServiceBuilder {
+    const target = findContainer(this.deployment, container);
+    target.livenessProbe = probe;
+    return this;
+  }
+
+  withCommonLifeCycle(container: string): WebServiceBuilder {
+    return this.withDeployment(commonLifeCycle(this.deployment, container))
+  }
+
+  withVolumeMount(container: string, appendVolumeMounts: VolumeMount[]): WebServiceBuilder {
+    const target = findContainer(this.deployment, container);
+    const volumeMounts = target.volumeMounts ?? [];
+    target.volumeMounts = appendVolumeMounts.concat(volumeMounts);
+    return this
+  }
+
+  withResourceRequirements(container: string, resourceRequirements: ResourceRequirements): WebServiceBuilder {
+    findContainer(this.deployment, container).resources = resourceRequirements;
+    return this
+  }
+
   withCustomResource(path: string): WebServiceBuilder {
-    console.log(relativePath(import.meta.url, path));
     const content = Deno.readTextFileSync(path);
     const resources = this.customResources ?? [];
     resources.push(yaml.parse(content));
     this.customResources = resources;
     return this;
   }
-
 }

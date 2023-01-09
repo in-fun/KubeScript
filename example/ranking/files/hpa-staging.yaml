@@ -1,0 +1,24 @@
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+    environment: staging
+    provider: kustomize
+  labels:
+    app: ranking
+  name: ranking
+  namespace: staging-delphi
+spec:
+  maxReplicas: 1
+  metrics:
+    - resource:
+        name: cpu
+        target:
+          averageUtilization: 30
+          type: Utilization
+      type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ranking

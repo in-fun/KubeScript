@@ -2,7 +2,31 @@ import { Deployment, merge, StatefulSet, env } from "../mod.ts";
 
 type T = Deployment;
 
-export default (res: T, datadogName: string) => {
+export function datadogSlim(res: T, datadogName: string): T {
+  const patch: T = {
+    metadata: {
+      labels: {
+        "tags.datadoghq.com/env": env,
+        "tags.datadoghq.com/service": datadogName
+      }
+    },
+    spec: {
+      selector: {},
+      template: {
+        metadata: {
+          labels: {
+            "tags.datadoghq.com/env": env,
+            "tags.datadoghq.com/service": datadogName
+          }
+        }
+      }
+      
+    }
+  }
+  return merge(res, patch)
+}
+
+export function datadogFull(res: T, datadogName: string): T {
   const patch: T = {
     metadata: {
       labels: {

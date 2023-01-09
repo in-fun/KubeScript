@@ -10,6 +10,9 @@ export type ContainerPort = k8s.V1ContainerPort
 export type ServicePort = k8s.V1ServicePort
 export type EnvVar = k8s.V1EnvVar
 export type Container = k8s.V1Container
+export type Probe = k8s.V1Probe
+export type VolumeMount = k8s.V1VolumeMount
+export type ResourceRequirements = k8s.V1ResourceRequirements
 
 export type EnvType = "staging" | "production";
 

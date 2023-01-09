@@ -1,9 +1,6 @@
 import { Deployment, merge, StatefulSet } from "../mod.ts";
-import { relativePath, readConfigData, generateName } from "./gen-config-map.ts"
 
 type T = Deployment;
-
-const envoyConfigMap = generateName("envoy-config-dd-apm-otel", readConfigData(relativePath(import.meta.url, "files")));
 
 const patch: T = {
   spec: {
