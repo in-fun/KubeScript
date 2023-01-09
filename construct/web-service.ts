@@ -1,7 +1,4 @@
 // deno-lint-ignore-file no-explicit-any
-import { datadogFull, datadogSlim } from "../trait/datadog.ts";
-import commonEnv from "../trait/common-env.ts";
-import commonLifeCycle from "../trait/common-lifecycle.ts"
 import {
   ContainerPort,
   Deployment,
@@ -11,7 +8,6 @@ import {
   Probe,
   VolumeMount,
   ResourceRequirements,
-  envoy,
   env,
   findContainer,
   withContainerEnv,
@@ -135,22 +131,6 @@ export class WebServiceBuilder {
     return this.withDeployment(envoy(this.deployment))
   }
 
-  withDatadogFullAnnotation(): WebServiceBuilder {
-    if (!this.monitorName) {
-      throw new Error(`monitor name ${this.monitorName} is not defined`);
-    }
-    const mergedDeployment = datadogFull(this.deployment, this.monitorName);
-    return this.withDeployment(mergedDeployment)
-  }
-
-  withDatadogSlimAnnotation(): WebServiceBuilder {
-    if (!this.monitorName) {
-      throw new Error(`monitor name ${this.monitorName} is not defined`);
-    }
-    const mergedDeployment = datadogSlim(this.deployment, this.monitorName);
-    return this.withDeployment(mergedDeployment)
-  }
-
   withDeployment(deployment: Deployment): WebServiceBuilder {
     this.deployment = deployment;
     return this
@@ -166,10 +146,6 @@ export class WebServiceBuilder {
     Object.entries(appendAnnotations).forEach((kv, _1, _2) => annotations[kv[0]] = kv[1])
     this.service.metadata!.annotations = annotations;
     return this
-  }
-
-  withCommonEnv(container: string): WebServiceBuilder {
-    return this.withDeployment(commonEnv(this.deployment, container))
   }
 
   withArgs(container: string, args: Array<string>): WebServiceBuilder {
@@ -188,10 +164,6 @@ export class WebServiceBuilder {
     const target = findContainer(this.deployment, container);
     target.livenessProbe = probe;
     return this;
-  }
-
-  withCommonLifeCycle(container: string): WebServiceBuilder {
-    return this.withDeployment(commonLifeCycle(this.deployment, container))
   }
 
   withVolumeMount(container: string, appendVolumeMounts: VolumeMount[]): WebServiceBuilder {
