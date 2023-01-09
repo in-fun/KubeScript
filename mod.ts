@@ -24,3 +24,4 @@ export const env = args["env"] as EnvType || "staging";
 
 export * from './construct/mod.ts';
 export * from './trait/mod.ts';
+export * from './util/mod.ts';
