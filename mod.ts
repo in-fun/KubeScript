@@ -21,3 +21,6 @@ export const hash = object_hash.default;
 export const args = flags.parse(Deno.args);
 
 export const env = args["env"] as EnvType || "staging";
+
+export * from './construct/mod.ts';
+export * from './trait/mod.ts';
