@@ -176,13 +176,13 @@ export class WebServiceBuilder {
     return this;
   }
 
-  withDeploymentTransformer(transformer: (d: Deployment, ...params: any[]) => Deployment, ...params: any[]): WebServiceBuilder {
-    this.deployment = transformer(this.deployment, params);
+  withDeploymentTransformer<T>(transformer: (d: Deployment, param: T) => Deployment, param: T): WebServiceBuilder {
+    this.deployment = transformer(this.deployment, param);
     return this
   }
 
-  withServiceTransformer(transformer: (d: Service, ...params: any[]) => Service, ...params: any[]): WebServiceBuilder {
-    this.service = transformer(this.service, params);
+  withServiceTransformer<T>(transformer: (d: Service, param: T) => Service, param: T): WebServiceBuilder {
+    this.service = transformer(this.service, param);
     return this
   }
 }
