@@ -14,7 +14,7 @@ if (url.search(":") < 0) {
 const module = await import(url);
 const objects = module.default;
 for (const object of objects) {
-  const s = yaml.stringify(object as Record<string, unknown>);
+  const s = yaml.stringify(object as Record<string, unknown>, { noRefs: true });
   console.log(s);
   console.log("---");
 }
