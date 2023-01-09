@@ -175,4 +175,14 @@ export class WebServiceBuilder {
     this.customResources = resources;
     return this;
   }
+
+  withDeploymentTransformer(transformer: (d: Deployment, ...params: any[]) => Deployment, ...params: any[]): WebServiceBuilder {
+    this.deployment = transformer(this.deployment, params);
+    return this
+  }
+
+  withServiceTransformer(transformer: (d: Service, ...params: any[]) => Service, ...params: any[]): WebServiceBuilder {
+    this.service = transformer(this.service, params);
+    return this
+  }
 }
