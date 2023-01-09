@@ -21,7 +21,8 @@
 * Type based code completion with Typescript.
 * Safe sandbox with Deno.
 
-![screencast](doc/screencast.mov)
+https://user-images.githubusercontent.com/705652/211314587-d5ed7bb2-3e28-4afe-960f-c0b26e0fd7a4.mov
+
 
 ## Quickstart
 
