@@ -1,6 +1,6 @@
 import { Deployment, env, withDebugger } from "./deps.ts";
 import labels from "./labels.ts";
-import configMap from './config-map.ts'
+import configMap from "./config-map.ts";
 
 const replicas = {
   staging: 1,
@@ -30,7 +30,10 @@ const res: Deployment = {
           name: "nginx",
           image: image,
           ports: [{ containerPort: 80 }],
-          volumeMounts: [{ name: configVolume, mountPath: "/etc/nginx/conf.d" }],
+          volumeMounts: [{
+            name: configVolume,
+            mountPath: "/etc/nginx/conf.d",
+          }],
         }],
         volumes: [{ name: configVolume, configMap: { name: configMapName } }],
       },
@@ -38,4 +41,4 @@ const res: Deployment = {
   },
 };
 
-export default env == 'staging' ? withDebugger(res) : res;
+export default env == "staging" ? withDebugger(res) : res;
