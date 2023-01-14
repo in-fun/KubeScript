@@ -11,8 +11,12 @@ name: Deno Check
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+      - "agent/**"
   pull_request:
     branches: ["main"]
+    paths-ignore:
+      - "agent/**"
 
 permissions:
   contents: read
