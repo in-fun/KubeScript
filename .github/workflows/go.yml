@@ -31,6 +31,16 @@ jobs:
     # Borrow from https://github.com/digitalocean/godo/pull/396
     - name: Format
       run: if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then exit 1; fi
-      
+
+    - name: Setup Deno
+      # uses: denoland/setup-deno@v1
+      uses: denoland/setup-deno@9db7f66e8e16b5699a514448ce994936c63f0d54
+      with:
+        deno-version: v1.x
+
+    # Go code requires `ks` installed globally
+    - name: Install ks
+      run: deno install --unstable -A --root /usr/local -n ks https://deno.land/x/kube_script/main.ts
+
     - name: Test
       run: go test -v ./...
