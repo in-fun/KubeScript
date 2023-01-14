@@ -1,7 +1,7 @@
-import { k8s, generateName, readConfigData, relativePath } from "./deps.ts";
+import { generateName, k8s, readConfigData, relativePath } from "./deps.ts";
 import labels from "./labels.ts";
 
-const dir = relativePath(import.meta.url, 'config');
+const dir = relativePath(import.meta.url, "config");
 const data = readConfigData(dir);
 const name = generateName(labels.app, data);
 
@@ -12,7 +12,7 @@ const res: k8s.V1ConfigMap = {
     name: name,
     labels,
   },
-  data: data
+  data: data,
 };
 
 export default res;
