@@ -2,35 +2,38 @@
 import {
   ContainerPort,
   Deployment,
+  env,
+  EnvVar,
+  findContainer,
+  Probe,
+  ResourceRequirements,
   Service,
   ServicePort,
-  EnvVar,
-  Probe,
   VolumeMount,
-  ResourceRequirements,
-  env,
-  findContainer,
   withContainerEnv,
 } from "./deps.ts";
 
 import { yaml } from "../deps.ts";
-
 
 export class WebService {
   deployment!: Deployment;
   service!: Service;
   customResources?: unknown[];
 
-  constructor(deployment: Deployment, service: Service, customResources?: unknown[]) {
-    this.deployment = deployment
-    this.service = service
-    this.customResources = customResources
+  constructor(
+    deployment: Deployment,
+    service: Service,
+    customResources?: unknown[],
+  ) {
+    this.deployment = deployment;
+    this.service = service;
+    this.customResources = customResources;
   }
 
   manifest(): any[] {
     const res: any[] = [this.service, this.deployment];
-    (this.customResources ?? []).forEach(r => res.push(r))
-    return res
+    (this.customResources ?? []).forEach((r) => res.push(r));
+    return res;
   }
 }
 
@@ -40,11 +43,15 @@ export class WebServiceBuilder {
   customResources?: unknown[];
 
   build(): WebService {
-    return new WebService(this.deployment, this.service, this.customResources)
+    return new WebService(this.deployment, this.service, this.customResources);
   }
 
-  static create(name: string, image: string, replica: number): WebServiceBuilder {
-    const labels = { app: name }
+  static create(
+    name: string,
+    image: string,
+    replica: number,
+  ): WebServiceBuilder {
+    const labels = { app: name };
     const deployment: Deployment = {
       apiVersion: "apps/v1",
       kind: "Deployment",
@@ -71,7 +78,7 @@ export class WebServiceBuilder {
           },
         },
       },
-    }
+    };
 
     const service: Service = {
       apiVersion: "v1",
@@ -79,7 +86,7 @@ export class WebServiceBuilder {
       metadata: {
         name: name,
         annotations: {
-          "environment": env
+          "environment": env,
         },
         labels: labels,
       },
@@ -87,20 +94,20 @@ export class WebServiceBuilder {
         clusterIP: "None",
         selector: labels,
       },
-    }
+    };
 
-    return new WebServiceBuilder(deployment, service)
+    return new WebServiceBuilder(deployment, service);
   }
 
   private constructor(deployment: Deployment, service: Service) {
-    this.deployment = deployment
-    this.service = service
+    this.deployment = deployment;
+    this.service = service;
   }
 
   withNamespace(namespace: string): WebServiceBuilder {
     this.service.metadata!.namespace = namespace;
     this.deployment.metadata!.namespace = namespace;
-    return this
+    return this;
   }
 
   withPorts(
@@ -113,35 +120,39 @@ export class WebServiceBuilder {
 
   withEnv(container: string, appendEnvs: Array<EnvVar>): WebServiceBuilder {
     this.deployment = withContainerEnv(this.deployment, container, appendEnvs);
-    return this
+    return this;
   }
 
   withServicePorts(ports: Array<ServicePort>): WebServiceBuilder {
     this.service.spec!.ports = ports;
-    return this
+    return this;
   }
 
   withDeployment(deployment: Deployment): WebServiceBuilder {
     this.deployment = deployment;
-    return this
+    return this;
   }
 
   withService(service: Service): WebServiceBuilder {
     this.service = service;
-    return this
+    return this;
   }
 
-  withServiceAnnotations(appendAnnotations:{[key: string]: string}): WebServiceBuilder {
+  withServiceAnnotations(
+    appendAnnotations: { [key: string]: string },
+  ): WebServiceBuilder {
     const annotations = this.service.metadata!.annotations ?? {};
-    Object.entries(appendAnnotations).forEach((kv, _1, _2) => annotations[kv[0]] = kv[1])
+    Object.entries(appendAnnotations).forEach((kv, _1, _2) =>
+      annotations[kv[0]] = kv[1]
+    );
     this.service.metadata!.annotations = annotations;
-    return this
+    return this;
   }
 
   withArgs(container: string, args: Array<string>): WebServiceBuilder {
     const target = findContainer(this.deployment, container);
     target.args = args;
-    return this
+    return this;
   }
 
   withReadinessProbe(container: string, probe: Probe): WebServiceBuilder {
@@ -156,16 +167,22 @@ export class WebServiceBuilder {
     return this;
   }
 
-  withVolumeMount(container: string, appendVolumeMounts: VolumeMount[]): WebServiceBuilder {
+  withVolumeMount(
+    container: string,
+    appendVolumeMounts: VolumeMount[],
+  ): WebServiceBuilder {
     const target = findContainer(this.deployment, container);
     const volumeMounts = target.volumeMounts ?? [];
     target.volumeMounts = appendVolumeMounts.concat(volumeMounts);
-    return this
+    return this;
   }
 
-  withResourceRequirements(container: string, resourceRequirements: ResourceRequirements): WebServiceBuilder {
+  withResourceRequirements(
+    container: string,
+    resourceRequirements: ResourceRequirements,
+  ): WebServiceBuilder {
     findContainer(this.deployment, container).resources = resourceRequirements;
-    return this
+    return this;
   }
 
   withCustomResource(path: string): WebServiceBuilder {
@@ -176,13 +193,19 @@ export class WebServiceBuilder {
     return this;
   }
 
-  withDeploymentTransformer<T>(transformer: (d: Deployment, param: T) => Deployment, param: T): WebServiceBuilder {
+  withDeploymentTransformer<T>(
+    transformer: (d: Deployment, param: T) => Deployment,
+    param: T,
+  ): WebServiceBuilder {
     this.deployment = transformer(this.deployment, param);
-    return this
+    return this;
   }
 
-  withServiceTransformer<T>(transformer: (d: Service, param: T) => Service, param: T): WebServiceBuilder {
+  withServiceTransformer<T>(
+    transformer: (d: Service, param: T) => Service,
+    param: T,
+  ): WebServiceBuilder {
     this.service = transformer(this.service, param);
-    return this
+    return this;
   }
 }

@@ -1,6 +1,6 @@
-export * as k8s from 'npm:@kubernetes/client-node';
+export * as k8s from "npm:@kubernetes/client-node";
 
-export {deepmerge} from 'https://deno.land/x/deepmergets@v4.2.2/dist/deno/mod.ts';
+export { deepmerge } from "https://deno.land/x/deepmergets@v4.2.2/dist/deno/mod.ts";
 
 export * as yaml from "https://deno.land/std@0.165.0/encoding/yaml.ts";
 
