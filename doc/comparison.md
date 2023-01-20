@@ -30,11 +30,13 @@ proved to be good at programming-in-the-large.
 
 ### cdk8s
 
-[**cdk8s**](https://cdk8s.io/docs/latest/#importing-constructs-for-the-kubernetes-api)
-is a software development framework for defining Kubernetes applications and
-reusable abstractions using familiar programming languages. At the time of
-writing, it supports TypeScript, Python, Java and Go. **cdk8s** apps are
-structured as a tree of [constructs](https://github.com/aws/constructs).
+> [**cdk8s**](https://cdk8s.io/docs/latest/#importing-constructs-for-the-kubernetes-api)
+> is a software development framework for defining Kubernetes applications and
+> reusable abstractions using familiar programming languages.
+
+At the time of writing, it supports TypeScript, Python, Java and Go. **cdk8s**
+apps are structured as a tree of
+[constructs](https://github.com/aws/constructs).
 
 _Compared to **cdk8s** (TypeScript), **KubeScript** is more lightweight, and
 easier to use_.
@@ -60,31 +62,33 @@ easier to use_.
 
 ### Tanda
 
-[Grafana Tanka](https://tanka.dev/) is a robust configuration utility for
-Kubernetes cluster, powered by the [Jsonnet](https://jsonnet.org/) language.
+> [Grafana Tanka](https://tanka.dev/) is a robust configuration utility for
+> Kubernetes cluster, powered by the [Jsonnet](https://jsonnet.org/) language.
+
 Jsonnet is less well-known and less expressive than TypeScript.
 
 ### KusionStack
 
-[KusionStack](https://kusionstack.io/) is a highly flexible programmable
-technology stack to enable unified application delivery and operation. It aims
-to help enterprises build an application-centric configuration management plane
-and DevOps ecosystem.
+> [KusionStack](https://kusionstack.io/) is a highly flexible programmable
+> technology stack to enable unified application delivery and operation. It aims
+> to help enterprises build an application-centric configuration management
+> plane and DevOps ecosystem.
 
 KusionStack uses the KCL (Kusion Configuration Language) for configuration, but
 [KCL](https://github.com/KusionStack/KCLVM) is still an early-stage language.
 
 ### KubeVela/Open Application Model
 
-[KubeVela](https://kubevela.io/) is a modern software delivery platform that
-makes deploying and operating applications across today's hybrid, multi-cloud
-environments easier, faster and more reliable.
+> [KubeVela](https://kubevela.io/) is a modern software delivery platform that
+> makes deploying and operating applications across today's hybrid, multi-cloud
+> environments easier, faster and more reliable.
+>
+> KubeVela is built on the [Open Application Model](https://oam.dev/), or OAM
+> for short. _OAM_ brings modular, extensible, and portable design for modeling
+> application deployment with higher level yet consistent API.
 
-KubeVela is built on the [Open Application Model](https://oam.dev/), or OAM for
-short. _OAM_ brings modular, extensible, and portable design for modeling
-application deployment with higher level yet consistent API. This model is well
-thought and designed, and there is even a spec of it. However, a spec could not
-cover all use cases, so it comes with an addon mechanism.
+_OAM_ is well thought and designed, and there is even a spec of it. However, a
+spec could not cover all use cases, so it comes with an addon mechanism.
 
 As a reference implementation of OAM, KubeVela includes some addons for common
 functionalities. But in a real world project, even a minor difference of the
