@@ -1,4 +1,4 @@
-import { Deployment, env } from "./deps.ts";
+import { Deployment, env, args } from "./deps.ts";
 import labels from "./labels.ts";
 
 const replicas = {
@@ -27,14 +27,9 @@ const res: Deployment = {
           image: image,
           command: ["/bin/sh"],
           args: [
-            /* For debug
-            '/bin/sleep',
-            'infinity',
-            // 'tail -f /dev/null',
-            */
             "-c",
             `tailscaled --tun=userspace-networking &
-             tailscale up --advertise-exit-node & sleep infinity
+             tailscale up --advertise-exit-node --auth-key ${args.key} & sleep infinity
              `,
           ],
           env: [
