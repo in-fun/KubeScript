@@ -99,3 +99,29 @@ is high.
 
 On the other hand, KubeScript's reusable constructs are just TypeScript
 functions or objects, it's easy to customize them for your needs.
+
+### Acorn
+
+> [Acorn](https://docs.acorn.io/) is an application packaging and deployment
+> framework that simplifies running apps on Kubernetes. Acorn is able to package
+> up all of an application's Docker images, configuration, and deployment
+> specifications into a single Acorn image artifact. This artifact is
+> publishable to any OCI container registry allowing it to be deployed on any
+> dev, test, or production Kubernetes. The portability of Acorn images enables
+> developers to develop applications locally and move to production without
+> having to switch tools or technology stacks.
+>
+> Acorn is a layer of abstraction on top of Kubernetes. Acorn users do not work
+> with Kubernetes YAML files directly. By design, no Kubernetes knowledge is
+> needed to use Acorn.
+>
+> We hope Acorn will simplify packaging and deployment of applications on
+> Kubernetes.
+
+The quote above summarizes Acorn very well. Hiding the complexity of Kubernetes
+by a layer of abstraction is good for basic use cases. But when building
+realworld complex services or apps, you also lose the flexibility and power of
+Kubernetes manifests.
+
+KubeScript does not hide Kubernetes manifests, instead it tries to make working
+with it a charm.
