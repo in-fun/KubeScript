@@ -1,4 +1,4 @@
-import { Deployment, env, args } from "./deps.ts";
+import { args, Deployment, env } from "./deps.ts";
 import labels from "./labels.ts";
 
 const replicas = {
