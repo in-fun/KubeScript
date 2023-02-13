@@ -91,6 +91,6 @@ ks https://deno.land/x/kube_script/example/web/mod.ts
    Deno is more developer friendly than node.js. For example, deno resolves
    dependencies on the fly, so no `npm install` any more.
 
-1. How does KubeScript comopare to other solutions?
+1. How does KubeScript compare to other solutions?
 
    We have summarized that in [this doc](doc/comparison.md).
